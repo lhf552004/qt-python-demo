@@ -25,6 +25,7 @@ class MainUI(QMainWindow):
             self.setStyleSheet(fh.read())
         self.addNewTaskButton.clicked.connect(self.addTask)
         self.completeTaskButton.clicked.connect(self.completeTask)
+        self.newTaskInput.returnPressed.connect(self.addTask)
         self.taskTable.setColumnWidth(0, 160)
         self.taskTable.setColumnWidth(1, 170)
         self.progressBar.setValue(0)
@@ -59,7 +60,7 @@ class MainUI(QMainWindow):
         self.progressBar.setValue(int(theValue * 100))
 
     def refreshTasks(self):
-        # self.taskTable.clear()
+        self.taskTable.setRowCount(0)
         self.taskTable.setRowCount(len(self.tasks))
         for row, task in enumerate(self.tasks):
             self.taskTable.setItem(row, 0, QTableWidgetItem(task['title']))
