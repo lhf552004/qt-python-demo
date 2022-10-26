@@ -8,7 +8,7 @@ class MainUI(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi("Allen_Main.ui", self)
-        self.tasks = []
+        self.__tasks = []
         self.initUI()
 
     @staticmethod
@@ -33,7 +33,7 @@ class MainUI(QMainWindow):
     def addTask(self):
         taskName = self.newTaskInput.text()
         task = {'title': taskName, 'status': False}
-        self.tasks.append(task)
+        self.__tasks.append(task)
         self.newTaskInput.clear()
         self.refreshTasks()
         self.updateProgess()
@@ -42,7 +42,7 @@ class MainUI(QMainWindow):
         print("Start complete task")
         selectedItems = self.taskTable.selectedItems()
         for item in selectedItems:
-            for task in self.tasks:
+            for task in self.__tasks:
                 if task['title'] == item.text():
                     task['status'] = True
                     break
@@ -50,9 +50,9 @@ class MainUI(QMainWindow):
         self.updateProgess()
         
     def updateProgess(self):
-        theLen = len(self.tasks)
+        theLen = len(self.__tasks)
         theCounter = 0
-        for cur in self.tasks:
+        for cur in self.__tasks:
             if cur['status']:
                 theCounter += 1
         theValue = theCounter / theLen
@@ -61,8 +61,8 @@ class MainUI(QMainWindow):
 
     def refreshTasks(self):
         self.taskTable.setRowCount(0)
-        self.taskTable.setRowCount(len(self.tasks))
-        for row, task in enumerate(self.tasks):
+        self.taskTable.setRowCount(len(self.__tasks))
+        for row, task in enumerate(self.__tasks):
             self.taskTable.setItem(row, 0, QTableWidgetItem(task['title']))
             self.taskTable.setItem(row, 1, QTableWidgetItem("Finished" if task["status"] else "Unfinished"))
     
