@@ -2,7 +2,8 @@ from typing_extensions import Self
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QPushButton, QTableWidgetItem)
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer, QTime
-
+from create import Creator
+from PyQt5 import QtGui
 
 class MainUI(QMainWindow):
     def __init__(self):
@@ -21,14 +22,30 @@ class MainUI(QMainWindow):
         self.setFixedSize(800, 600)
         self.setWindowTitle("Hello World")
         self.show()
+
+        self.setWindowIcon(QtGui.QIcon('images\Southlands.png'))
+
+        timer = QTimer(self)
+        timer.timeout.connect(self.displayTime)
+        timer.start(1000)
+
         with open("style/Adaptic.qss", "r") as fh:
             self.setStyleSheet(fh.read())
         self.addNewTaskButton.clicked.connect(self.addTask)
         self.completeTaskButton.clicked.connect(self.completeTask)
         self.newTaskInput.returnPressed.connect(self.addTask)
+        self.addNewPlayerButton.clicked.connect(self.addPlayer)
         self.taskTable.setColumnWidth(0, 160)
         self.taskTable.setColumnWidth(1, 170)
         self.progressBar.setValue(0)
+
+    def displayTime(self):
+        currentTime = QTime.currentTime()
+        displayTxt = currentTime.toString('hh:mm:ss')
+        self.currentTime.display(displayTxt)
+
+    def addPlayer(self):
+        create = Creator(self)
 
     def addTask(self):
         taskName = self.newTaskInput.text()
